@@ -46,3 +46,5 @@ CATKIN_IGNORE
 
 # Kdev
 *.kdev4
+
+.DS_Store
