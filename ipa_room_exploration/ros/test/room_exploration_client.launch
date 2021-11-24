@@ -10,13 +10,13 @@
 	<!--  -->
 	<node ns="room_exploration" pkg="ipa_room_exploration" type="room_exploration_client" name="room_exploration_client" output="screen">
 <!--		<rosparam file="$(arg env_pack)/envs/$(arg robot_env)/map.yaml" command="load" />-->
-		<rosparam file="$(find roomba)/data/sim_data/meeting.yaml" command="load" />
+<!--		<rosparam file="$(find roomba)/data/sim_data/meeting.yaml" command="load" />-->
 <!--		<param name="env_pack" value="$(arg env_pack)"/>-->
 <!--		<param name="robot_env" value="$(arg robot_env)"/>-->
 		<param name="robot_radius" value="$(arg robot_radius)"/>
 		<param name="coverage_radius" value="$(arg coverage_radius)"/>
 		<param name="use_test_maps" value="$(arg use_test_maps)"/>
-		<param name="abs_map_path" value="$(find roomba)/data/sim_data/meeting.yaml"/>
+		<param name="abs_map_path" value="$(find roomba)/data/sim_data/meeting.png"/>
 	</node>
 
 

@@ -81,6 +81,7 @@ int main(int argc, char **argv)
 		}
 	}
 
+	std::cout << "[image_path]" << image_path << std::endl;
 	cv::Mat map_flipped = cv::imread(image_path, 0);
 	cv::Mat map;
 	cv::flip(map_flipped, map, 0);
