@@ -543,37 +543,37 @@ void RoomExplorationServer::exploreRoom(const ipa_building_msgs::RoomExploration
 			boustrophedon_variant_explorer_.getExplorationPath(room_map, exploration_path, map_resolution, starting_position, map_origin, grid_spacing_in_pixel, grid_obstacle_offset_, path_eps_, cell_visiting_order_, true, zero_vector, min_cell_area_, max_deviation_from_track_);
 	}
 
-	// display finally planned path
-	if (display_trajectory_ == true)
-	{
-		std::cout << "printing path" << std::endl;
-		cv::Mat fov_path_map;
-		for(size_t step=1; step<exploration_path.size(); ++step)
-		{
-			fov_path_map = room_map.clone();
-			cv::resize(fov_path_map, fov_path_map, cv::Size(), 2, 2, cv::INTER_LINEAR);
-			if (exploration_path.size() > 0)
-				cv::circle(fov_path_map, 2*cv::Point((exploration_path[0].x-map_origin.x)/map_resolution, (exploration_path[0].y-map_origin.y)/map_resolution), 2, cv::Scalar(150), cv::FILLED);
-			for(size_t i=1; i<=step; ++i)
-			{
-				cv::Point p1((exploration_path[i-1].x-map_origin.x)/map_resolution, (exploration_path[i-1].y-map_origin.y)/map_resolution);
-				cv::Point p2((exploration_path[i].x-map_origin.x)/map_resolution, (exploration_path[i].y-map_origin.y)/map_resolution);
-				cv::circle(fov_path_map, 2*p2, 2, cv::Scalar(200), cv::FILLED);
-				cv::line(fov_path_map, 2*p1, 2*p2, cv::Scalar(150), 1);
-				cv::Point p3(p2.x+5*cos(exploration_path[i].theta), p2.y+5*sin(exploration_path[i].theta));
-				if (i==step)
-				{
-					cv::circle(fov_path_map, 2*p2, 2, cv::Scalar(80), cv::FILLED);
-					cv::line(fov_path_map, 2*p1, 2*p2, cv::Scalar(150), 1);
-					cv::line(fov_path_map, 2*p2, 2*p3, cv::Scalar(50), 1);
-				}
-			}
-//			cv::imshow("cell path", fov_path_map);
-//			cv::waitKey();
-		}
-		cv::imshow("cell path", fov_path_map);
-		cv::waitKey();
-	}
+	// 	// display finally planned path
+	// 	if (display_trajectory_ == true)
+	// 	{
+	// 		std::cout << "printing path" << std::endl;
+	// 		cv::Mat fov_path_map;
+	// 		for(size_t step=1; step<exploration_path.size(); ++step)
+	// 		{
+	// 			fov_path_map = room_map.clone();
+	// 			cv::resize(fov_path_map, fov_path_map, cv::Size(), 2, 2, cv::INTER_LINEAR);
+	// 			if (exploration_path.size() > 0)
+	// 				cv::circle(fov_path_map, 2*cv::Point((exploration_path[0].x-map_origin.x)/map_resolution, (exploration_path[0].y-map_origin.y)/map_resolution), 2, cv::Scalar(150), cv::FILLED);
+	// 			for(size_t i=1; i<=step; ++i)
+	// 			{
+	// 				cv::Point p1((exploration_path[i-1].x-map_origin.x)/map_resolution, (exploration_path[i-1].y-map_origin.y)/map_resolution);
+	// 				cv::Point p2((exploration_path[i].x-map_origin.x)/map_resolution, (exploration_path[i].y-map_origin.y)/map_resolution);
+	// 				cv::circle(fov_path_map, 2*p2, 2, cv::Scalar(200), cv::FILLED);
+	// 				cv::line(fov_path_map, 2*p1, 2*p2, cv::Scalar(150), 1);
+	// 				cv::Point p3(p2.x+5*cos(exploration_path[i].theta), p2.y+5*sin(exploration_path[i].theta));
+	// 				if (i==step)
+	// 				{
+	// 					cv::circle(fov_path_map, 2*p2, 2, cv::Scalar(80), cv::FILLED);
+	// 					cv::line(fov_path_map, 2*p1, 2*p2, cv::Scalar(150), 1);
+	// 					cv::line(fov_path_map, 2*p2, 2*p3, cv::Scalar(50), 1);
+	// 				}
+	// 			}
+	// //			cv::imshow("cell path", fov_path_map);
+	// //			cv::waitKey();
+	// 		}
+	// 		cv::imshow("cell path", fov_path_map);
+	// 		cv::waitKey();
+	// 	}
 
 	ROS_INFO("Room exploration planning finished.");
 
@@ -926,7 +926,7 @@ void RoomExplorationServer::navigateExplorationPath(const std::vector<geometry_m
 				area_centers[i] = grid_areas[i][0];
 			}
 		}
-		
+
 		// testing
 //		black_map = room_map.clone();
 //		for(size_t i = 0; i < area_centers.size(); ++i)
@@ -1000,7 +1000,7 @@ void RoomExplorationServer::navigateExplorationPath(const std::vector<geometry_m
 				std::cout << "center not reachable on perimeter" << std::endl;
 			}
 		}
-		
+
 //		drawSeenPoints(copy, robot_poses, goal->field_of_view, corner_point_1, corner_point_2, map_resolution, map_origin);
 //		cv::namedWindow("seen areas", cv::WINDOW_NORMAL);
 //		cv::imshow("seen areas", copy);

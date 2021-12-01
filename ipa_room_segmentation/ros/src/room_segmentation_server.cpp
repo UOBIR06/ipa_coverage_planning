@@ -715,28 +715,28 @@ void RoomSegmentationServer::execute_segmentation_server(const ipa_building_msgs
 		}
 	}
 
-	if (display_segmented_map_ == true)
-	{
-		// colorize the segmented map with the indices of the room_center vector
-		cv::Mat color_segmented_map = indexed_map.clone();
-		color_segmented_map.convertTo(color_segmented_map, CV_8U);
-		cv::cvtColor(color_segmented_map, color_segmented_map, cv::COLOR_GRAY2BGR);
-		for(size_t i = 1; i <= room_centers_x_values.size(); ++i)
-		{
-			//choose random color for each room
-			const cv::Vec3b color((rand() % 250) + 1, (rand() % 250) + 1, (rand() % 250) + 1);
-			for(size_t v = 0; v < indexed_map.rows; ++v)
-				for(size_t u = 0; u < indexed_map.cols; ++u)
-					if(indexed_map.at<int>(v,u) == i)
-						color_segmented_map.at<cv::Vec3b>(v,u) = color;
-		}
-//		cv::Mat disp = segmented_map.clone();
-		for (size_t index = 0; index < room_centers_x_values.size(); ++index)
-			cv::circle(color_segmented_map, cv::Point(room_centers_x_values[index], room_centers_y_values[index]), 2, cv::Scalar(256), cv::FILLED);
+	// 	if (display_segmented_map_ == true)
+	// 	{
+	// 		// colorize the segmented map with the indices of the room_center vector
+	// 		cv::Mat color_segmented_map = indexed_map.clone();
+	// 		color_segmented_map.convertTo(color_segmented_map, CV_8U);
+	// 		cv::cvtColor(color_segmented_map, color_segmented_map, cv::COLOR_GRAY2BGR);
+	// 		for(size_t i = 1; i <= room_centers_x_values.size(); ++i)
+	// 		{
+	// 			//choose random color for each room
+	// 			const cv::Vec3b color((rand() % 250) + 1, (rand() % 250) + 1, (rand() % 250) + 1);
+	// 			for(size_t v = 0; v < indexed_map.rows; ++v)
+	// 				for(size_t u = 0; u < indexed_map.cols; ++u)
+	// 					if(indexed_map.at<int>(v,u) == i)
+	// 						color_segmented_map.at<cv::Vec3b>(v,u) = color;
+	// 		}
+	// //		cv::Mat disp = segmented_map.clone();
+	// 		for (size_t index = 0; index < room_centers_x_values.size(); ++index)
+	// 			cv::circle(color_segmented_map, cv::Point(room_centers_x_values[index], room_centers_y_values[index]), 2, cv::Scalar(256), cv::FILLED);
 
-		cv::imshow("segmentation", color_segmented_map);
-		cv::waitKey();
-	}
+	// 		cv::imshow("segmentation", color_segmented_map);
+	// 		cv::waitKey();
+	// 	}
 
 	if (publish_segmented_map_ == true)
 	{

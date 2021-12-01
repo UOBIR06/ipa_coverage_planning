@@ -196,41 +196,41 @@ int main(int argc, char **argv)
 			ROS_INFO("Finished successfully!");
 			ipa_building_msgs::MapSegmentationResultConstPtr result_seg = ac.getResult();
 
-			// display
-			cv_bridge::CvImagePtr cv_ptr_obj;
-			cv_ptr_obj = cv_bridge::toCvCopy(result_seg->segmented_map, sensor_msgs::image_encodings::TYPE_32SC1);
-			cv::Mat segmented_map = cv_ptr_obj->image;
-			cv::Mat colour_segmented_map = segmented_map.clone();
-			colour_segmented_map.convertTo(colour_segmented_map, CV_8U);
-			cv::cvtColor(colour_segmented_map, colour_segmented_map, cv::COLOR_GRAY2BGR);
-			for (size_t i = 1; i <= result_seg->room_information_in_pixel.size(); ++i)
-			{
-				//choose random color for each room
-				int blue = (rand() % 250) + 1;
-				int green = (rand() % 250) + 1;
-				int red = (rand() % 250) + 1;
-				for (size_t u = 0; u < segmented_map.rows; ++u)
-				{
-					for (size_t v = 0; v < segmented_map.cols; ++v)
-					{
-						if (segmented_map.at<int>(u, v) == i)
-						{
-							colour_segmented_map.at<cv::Vec3b>(u, v)[0] = blue;
-							colour_segmented_map.at<cv::Vec3b>(u, v)[1] = green;
-							colour_segmented_map.at<cv::Vec3b>(u, v)[2] = red;
-						}
-					}
-				}
-			}
-			//draw the room centers into the map
-			for (size_t i = 0; i < result_seg->room_information_in_pixel.size(); ++i)
-			{
-				cv::Point current_center(result_seg->room_information_in_pixel[i].room_center.x, result_seg->room_information_in_pixel[i].room_center.y);
-				cv::circle(colour_segmented_map, current_center, 2, CV_RGB(0, 0, 255), cv::FILLED);
-			}
+			// // display
+			// cv_bridge::CvImagePtr cv_ptr_obj;
+			// cv_ptr_obj = cv_bridge::toCvCopy(result_seg->segmented_map, sensor_msgs::image_encodings::TYPE_32SC1);
+			// cv::Mat segmented_map = cv_ptr_obj->image;
+			// cv::Mat colour_segmented_map = segmented_map.clone();
+			// colour_segmented_map.convertTo(colour_segmented_map, CV_8U);
+			// cv::cvtColor(colour_segmented_map, colour_segmented_map, cv::COLOR_GRAY2BGR);
+			// for (size_t i = 1; i <= result_seg->room_information_in_pixel.size(); ++i)
+			// {
+			// 	//choose random color for each room
+			// 	int blue = (rand() % 250) + 1;
+			// 	int green = (rand() % 250) + 1;
+			// 	int red = (rand() % 250) + 1;
+			// 	for (size_t u = 0; u < segmented_map.rows; ++u)
+			// 	{
+			// 		for (size_t v = 0; v < segmented_map.cols; ++v)
+			// 		{
+			// 			if (segmented_map.at<int>(u, v) == i)
+			// 			{
+			// 				colour_segmented_map.at<cv::Vec3b>(u, v)[0] = blue;
+			// 				colour_segmented_map.at<cv::Vec3b>(u, v)[1] = green;
+			// 				colour_segmented_map.at<cv::Vec3b>(u, v)[2] = red;
+			// 			}
+			// 		}
+			// 	}
+			// }
+			// //draw the room centers into the map
+			// for (size_t i = 0; i < result_seg->room_information_in_pixel.size(); ++i)
+			// {
+			// 	cv::Point current_center(result_seg->room_information_in_pixel[i].room_center.x, result_seg->room_information_in_pixel[i].room_center.y);
+			// 	cv::circle(colour_segmented_map, current_center, 2, CV_RGB(0, 0, 255), cv::FILLED);
+			// }
 
-			cv::imshow("segmentation", colour_segmented_map);
-			cv::waitKey();
+			// cv::imshow("segmentation", colour_segmented_map);
+			// cv::waitKey();
 		}
 		//	}
 
