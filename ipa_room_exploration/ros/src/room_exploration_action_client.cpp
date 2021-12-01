@@ -60,26 +60,26 @@ int main(int argc, char **argv)
 
 	std::string image_path;
 	priv_nh.param<std::string>("abs_map_path", image_path, "");
-	if (image_path.empty())
-	{
-		if (use_test_maps)
-		{
-			// read in test map
-			const std::string test_map_path = ros::package::getPath("ipa_room_segmentation") + "/common/files/test_maps/";
-			image_path = test_map_path + "lab_ipa.png";
-		}
-		else
-		{
-			std::string env_pack_path;
-			priv_nh.param<std::string>("env_pack", env_pack_path, "ipa_room_segmentation");
-			std::string file_name;
-			priv_nh.param<std::string>("image", file_name, "map.pgm");
-			std::string map_name;
-			priv_nh.param<std::string>("robot_env", map_name, "lab_ipa");
-
-			image_path = env_pack_path + "/envs/" + map_name + "/" + file_name;
-		}
-	}
+//	if (image_path.empty())
+//	{
+//		if (use_test_maps)
+//		{
+//			// read in test map
+//			const std::string test_map_path = ros::package::getPath("ipa_room_segmentation") + "/common/files/test_maps/";
+//			image_path = test_map_path + "lab_ipa.png";
+//		}
+//		else
+//		{
+//			std::string env_pack_path;
+//			priv_nh.param<std::string>("env_pack", env_pack_path, "ipa_room_segmentation");
+//			std::string file_name;
+//			priv_nh.param<std::string>("image", file_name, "map.pgm");
+//			std::string map_name;
+//			priv_nh.param<std::string>("robot_env", map_name, "lab_ipa");
+//
+//			image_path = env_pack_path + "/envs/" + map_name + "/" + file_name;
+//		}
+//	}
 
 	std::cout << "[image_path]" << image_path << std::endl;
 	cv::Mat map_flipped = cv::imread(image_path, 0);

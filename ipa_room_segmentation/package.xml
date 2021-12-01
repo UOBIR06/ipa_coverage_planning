@@ -23,7 +23,7 @@
 	<url>http://wiki.ros.org/ipa_room_segmentation</url>
 
 	<buildtool_depend>catkin</buildtool_depend>
-	
+
 	<depend>actionlib</depend>
 	<depend>boost</depend>
 	<depend>cv_bridge</depend>
@@ -36,5 +36,8 @@
 	<depend>roscpp</depend>
 	<depend>roslib</depend>
 	<depend>sensor_msgs</depend>
+	<depend>grid_map_msgs</depend>
+	<depend>grid_map_ros</depend>
+
 
 </package>

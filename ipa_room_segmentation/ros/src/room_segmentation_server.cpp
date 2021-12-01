@@ -110,7 +110,7 @@ RoomSegmentationServer::RoomSegmentationServer(ros::NodeHandle nh, std::string n
 		node_handle_.param("room_area_factor_lower_limit_distance", room_lower_limit_distance_, 0.35);
 		std::cout << "room_segmentation/room_area_factor_lower_limit = " << room_lower_limit_distance_ << std::endl;
 	}
-	//if (room_segmentation_algorithm_ == 3) //set voronoi parameters
+	//	if (room_segmentation_algorithm_ == 3) //set voronoi parameters
 	{
 		node_handle_.param("room_area_factor_upper_limit_voronoi", room_upper_limit_voronoi_, 120.0);
 		std::cout << "room_segmentation/room_area_factor_upper_limit = " << room_upper_limit_voronoi_ << std::endl;
@@ -124,6 +124,8 @@ RoomSegmentationServer::RoomSegmentationServer(ros::NodeHandle nh, std::string n
 		std::cout << "room_segmentation/min_critical_point_distance_factor = " << min_critical_point_distance_factor_ << std::endl;
 		node_handle_.param("max_area_for_merging", max_area_for_merging_, 12.5);
 		std::cout << "room_segmentation/max_area_for_merging = " << max_area_for_merging_ << std::endl;
+
+		// node_handle_.getParam("get_map_as_array", get_map_as_array, true);
 	}
 	//if (room_segmentation_algorithm_ == 4 || train_semantic_ == true) //set semantic parameters
 	{
@@ -133,44 +135,44 @@ RoomSegmentationServer::RoomSegmentationServer(ros::NodeHandle nh, std::string n
 		std::cout << "room_segmentation/room_area_factor_lower_limit = " << room_lower_limit_semantic_ << std::endl;
 
 		// train the algorithm if wanted
-		if(train_semantic_ == true)
-		{
-			AdaboostClassifier semantic_segmentation;
-			const std::string package_path = ros::package::getPath("ipa_room_segmentation");
-			const std::string classifier_default_path = package_path + "/common/files/classifier_models/";
-			const std::string classifier_path = "room_segmentation/classifier_models/";
+		// if (train_semantic_ == true)
+		// {
+		// 	AdaboostClassifier semantic_segmentation;
+		// 	const std::string package_path = ros::package::getPath("ipa_room_segmentation");
+		// 	const std::string classifier_default_path = package_path + "/common/files/classifier_models/";
+		// 	const std::string classifier_path = "room_segmentation/classifier_models/";
 
-			// load files to train the algorithm
-			node_handle_.getParam("semantic_training_maps_room_file_list", semantic_training_maps_room_file_list_);
-			std::cout << "room_segmentation/semantic_training_maps_room_file_list = \n";
-			for (size_t i=0; i<semantic_training_maps_room_file_list_.size(); ++i)
-				std::cout << "   " << semantic_training_maps_room_file_list_[i] << std::endl;
-			node_handle_.getParam("semantic_training_maps_hallway_file_list", semantic_training_maps_hallway_file_list_);
-			std::cout << "room_segmentation/semantic_training_maps_hallway_file_list = \n";
-			for (size_t i=0; i<semantic_training_maps_hallway_file_list_.size(); ++i)
-				std::cout << "   " << semantic_training_maps_hallway_file_list_[i] << std::endl << std::endl;
+		// 	// load files to train the algorithm
+		// 	node_handle_.getParam("semantic_training_maps_room_file_list", semantic_training_maps_room_file_list_);
+		// 	std::cout << "room_segmentation/semantic_training_maps_room_file_list = \n";
+		// 	for (size_t i = 0; i < semantic_training_maps_room_file_list_.size(); ++i)
+		// 		std::cout << "   " << semantic_training_maps_room_file_list_[i] << std::endl;
+		// 	node_handle_.getParam("semantic_training_maps_hallway_file_list", semantic_training_maps_hallway_file_list_);
+		// 	std::cout << "room_segmentation/semantic_training_maps_hallway_file_list = \n";
+		// 	for (size_t i = 0; i < semantic_training_maps_hallway_file_list_.size(); ++i)
+		// 		std::cout << "   " << semantic_training_maps_hallway_file_list_[i] << std::endl
+		// 							<< std::endl;
 
-			ROS_INFO("You have chosen to train the semantic segmentation method.\n");
+		// 	ROS_INFO("You have chosen to train the semantic segmentation method.\n");
 
-			// load the training maps, change to your maps when you want to train different ones
-			std::vector<cv::Mat> room_training_maps;
-			for (size_t i=0; i<semantic_training_maps_room_file_list_.size(); ++i)
-			{
-				cv::Mat training_map = cv::imread(semantic_training_maps_room_file_list_[i], 0);
-				room_training_maps.push_back(training_map);
-			}
+		// 	// load the training maps, change to your maps when you want to train different ones
+		// 	std::vector<cv::Mat> room_training_maps;
+		// 	for (size_t i = 0; i < semantic_training_maps_room_file_list_.size(); ++i)
+		// 	{
+		// 		cv::Mat training_map = cv::imread(semantic_training_maps_room_file_list_[i], 0);
+		// 		room_training_maps.push_back(training_map);
+		// 	}
 
-			std::vector<cv::Mat> hallway_training_maps;
-			for (size_t i=0; i<semantic_training_maps_hallway_file_list_.size(); ++i)
-			{
-				cv::Mat training_map = cv::imread(semantic_training_maps_hallway_file_list_[i], 0);
-				hallway_training_maps.push_back(training_map);
-			}
+		// 	std::vector<cv::Mat> hallway_training_maps;
+		// 	for (size_t i = 0; i < semantic_training_maps_hallway_file_list_.size(); ++i)
+		// 	{
+		// 		cv::Mat training_map = cv::imread(semantic_training_maps_hallway_file_list_[i], 0);
+		// 		hallway_training_maps.push_back(training_map);
+		// 	}
 
-			//train the algorithm
-			semantic_segmentation.trainClassifiers(room_training_maps, hallway_training_maps, classifier_path);
-
-		}
+		// 	//train the algorithm
+		// 	semantic_segmentation.trainClassifiers(room_training_maps, hallway_training_maps, classifier_path);
+		// }
 	}
 	//if (room_segmentation_algorithm_ == 5 || train_vrf_ == true) //set voronoi random field parameters
 	{
@@ -199,75 +201,75 @@ RoomSegmentationServer::RoomSegmentationServer(ros::NodeHandle nh, std::string n
 		std::cout << "room_segmentation/max_area_for_merging = " << max_area_for_merging_ << std::endl;
 
 		// train the algorithm if wanted
-		if(train_vrf_ == true)
-		{
-			VoronoiRandomFieldSegmentation vrf_segmentation; //voronoi random field segmentation method
-			const std::string package_path = ros::package::getPath("ipa_room_segmentation");
-			std::string classifier_default_path = package_path + "/common/files/classifier_models/";
-			std::string classifier_storage_path = "room_segmentation/classifier_models/";
-			// vector that stores the possible labels that are drawn in the training maps. Order: room - hallway - doorway
-			std::vector<uint> possible_labels(3);
-			possible_labels[0] = 77;
-			possible_labels[1] = 115;
-			possible_labels[2] = 179;
+		// if (train_vrf_ == true)
+		// {
+		// 	VoronoiRandomFieldSegmentation vrf_segmentation; //voronoi random field segmentation method
+		// 	const std::string package_path = ros::package::getPath("ipa_room_segmentation");
+		// 	std::string classifier_default_path = package_path + "/common/files/classifier_models/";
+		// 	std::string classifier_storage_path = "room_segmentation/classifier_models/";
+		// 	// vector that stores the possible labels that are drawn in the training maps. Order: room - hallway - doorway
+		// 	std::vector<uint> possible_labels(3);
+		// 	possible_labels[0] = 77;
+		// 	possible_labels[1] = 115;
+		// 	possible_labels[2] = 179;
 
-			// read given paths to training files
-			node_handle_.getParam("vrf_original_maps_file_list", vrf_original_maps_file_list_);
-			std::cout << "room_segmentation/vrf_original_maps_file_list = \n";
-			for (size_t i=0; i<vrf_original_maps_file_list_.size(); ++i)
-				std::cout << "   " << vrf_original_maps_file_list_[i] << std::endl;
-			node_handle_.getParam("vrf_training_maps_file_list", vrf_training_maps_file_list_);
-			std::cout << "room_segmentation/vrf_training_maps_file_list = \n";
-			for (size_t i=0; i<vrf_training_maps_file_list_.size(); ++i)
-				std::cout << "   " << vrf_training_maps_file_list_[i] << std::endl;
-			node_handle_.getParam("vrf_voronoi_maps_file_list", vrf_voronoi_maps_file_list_);
-			std::cout << "room_segmentation/vrf_voronoi_maps_file_list = \n";
-			for (size_t i=0; i<vrf_voronoi_maps_file_list_.size(); ++i)
-				std::cout << "   " << vrf_voronoi_maps_file_list_[i] << std::endl;
-			node_handle_.getParam("vrf_voronoi_node_maps_file_list", vrf_voronoi_node_maps_file_list_);
-			std::cout << "room_segmentation/vrf_voronoi_node_maps_file_list = \n";
-			for (size_t i=0; i<vrf_voronoi_node_maps_file_list_.size(); ++i)
-				std::cout << "   " << vrf_voronoi_node_maps_file_list_[i] << std::endl << std::endl;
+		// 	// read given paths to training files
+		// 	node_handle_.getParam("vrf_original_maps_file_list", vrf_original_maps_file_list_);
+		// 	std::cout << "room_segmentation/vrf_original_maps_file_list = \n";
+		// 	for (size_t i = 0; i < vrf_original_maps_file_list_.size(); ++i)
+		// 		std::cout << "   " << vrf_original_maps_file_list_[i] << std::endl;
+		// 	node_handle_.getParam("vrf_training_maps_file_list", vrf_training_maps_file_list_);
+		// 	std::cout << "room_segmentation/vrf_training_maps_file_list = \n";
+		// 	for (size_t i = 0; i < vrf_training_maps_file_list_.size(); ++i)
+		// 		std::cout << "   " << vrf_training_maps_file_list_[i] << std::endl;
+		// 	node_handle_.getParam("vrf_voronoi_maps_file_list", vrf_voronoi_maps_file_list_);
+		// 	std::cout << "room_segmentation/vrf_voronoi_maps_file_list = \n";
+		// 	for (size_t i = 0; i < vrf_voronoi_maps_file_list_.size(); ++i)
+		// 		std::cout << "   " << vrf_voronoi_maps_file_list_[i] << std::endl;
+		// 	node_handle_.getParam("vrf_voronoi_node_maps_file_list", vrf_voronoi_node_maps_file_list_);
+		// 	std::cout << "room_segmentation/vrf_voronoi_node_maps_file_list = \n";
+		// 	for (size_t i = 0; i < vrf_voronoi_node_maps_file_list_.size(); ++i)
+		// 		std::cout << "   " << vrf_voronoi_node_maps_file_list_[i] << std::endl
+		// 							<< std::endl;
 
-			ROS_INFO("You have chosen to train the voronoi random field segmentation method.\n");
+		// 	ROS_INFO("You have chosen to train the voronoi random field segmentation method.\n");
 
-			// load the training maps
-			std::vector<cv::Mat> training_maps;
-			for (size_t i=0; i<vrf_training_maps_file_list_.size(); ++i)
-			{
-				cv::Mat training_map = cv::imread(vrf_training_maps_file_list_[i], 0);
-				training_maps.push_back(training_map);
-			}
+		// 	// load the training maps
+		// 	std::vector<cv::Mat> training_maps;
+		// 	for (size_t i = 0; i < vrf_training_maps_file_list_.size(); ++i)
+		// 	{
+		// 		cv::Mat training_map = cv::imread(vrf_training_maps_file_list_[i], 0);
+		// 		training_maps.push_back(training_map);
+		// 	}
 
-			// load the voronoi maps
-			std::vector<cv::Mat> voronoi_maps;
-			for (size_t i=0; i<vrf_voronoi_maps_file_list_.size(); ++i)
-			{
-				cv::Mat training_map = cv::imread(vrf_voronoi_maps_file_list_[i], 0);
-				voronoi_maps.push_back(training_map);
-			}
+		// 	// load the voronoi maps
+		// 	std::vector<cv::Mat> voronoi_maps;
+		// 	for (size_t i = 0; i < vrf_voronoi_maps_file_list_.size(); ++i)
+		// 	{
+		// 		cv::Mat training_map = cv::imread(vrf_voronoi_maps_file_list_[i], 0);
+		// 		voronoi_maps.push_back(training_map);
+		// 	}
 
-			// load the voronoi-nodes maps
-			std::vector<cv::Mat> voronoi_node_maps;
-			for (size_t i=0; i<vrf_voronoi_node_maps_file_list_.size(); ++i)
-			{
-				cv::Mat training_map = cv::imread(vrf_voronoi_node_maps_file_list_[i], 0);
-				voronoi_node_maps.push_back(training_map);
-			}
+		// 	// load the voronoi-nodes maps
+		// 	std::vector<cv::Mat> voronoi_node_maps;
+		// 	for (size_t i = 0; i < vrf_voronoi_node_maps_file_list_.size(); ++i)
+		// 	{
+		// 		cv::Mat training_map = cv::imread(vrf_voronoi_node_maps_file_list_[i], 0);
+		// 		voronoi_node_maps.push_back(training_map);
+		// 	}
 
-			// load the original maps
-			std::vector<cv::Mat> original_maps;
-			for (size_t i=0; i<vrf_original_maps_file_list_.size(); ++i)
-			{
-				cv::Mat training_map = cv::imread(vrf_original_maps_file_list_[i], 0);
-				original_maps.push_back(training_map);
-			}
+		// 	// load the original maps
+		// 	std::vector<cv::Mat> original_maps;
+		// 	for (size_t i = 0; i < vrf_original_maps_file_list_.size(); ++i)
+		// 	{
+		// 		cv::Mat training_map = cv::imread(vrf_original_maps_file_list_[i], 0);
+		// 		original_maps.push_back(training_map);
+		// 	}
 
-			//train the algorithm
-			vrf_segmentation.trainAlgorithms(original_maps, training_maps, voronoi_maps, voronoi_node_maps, possible_labels, classifier_storage_path,
-					voronoi_random_field_epsilon_for_neighborhood_, max_iterations_, min_neighborhood_size_, min_voronoi_random_field_node_distance_);
-
-		}
+		// 	//train the algorithm
+		// 	vrf_segmentation.trainAlgorithms(original_maps, training_maps, voronoi_maps, voronoi_node_maps, possible_labels, classifier_storage_path,
+		// 																	 voronoi_random_field_epsilon_for_neighborhood_, max_iterations_, min_neighborhood_size_, min_voronoi_random_field_node_distance_);
+		// }
 	}
 	//if (room_segmentation_algorithm_ == 99) //set passthrough parameters
 	{
@@ -316,7 +318,7 @@ void RoomSegmentationServer::dynamic_reconfigure_callback(ipa_room_segmentation:
 		std::cout << "room_segmentation/room_area_factor_upper_limit = " << room_upper_limit_distance_ << std::endl;
 		std::cout << "room_segmentation/room_area_factor_lower_limit = " << room_lower_limit_distance_ << std::endl;
 	}
-	//if (room_segmentation_algorithm_ == 3) //set voronoi parameters
+	//	if (room_segmentation_algorithm_ == 3) //set voronoi parameters
 	{
 		room_upper_limit_voronoi_ = config.room_area_factor_upper_limit_voronoi;
 		room_lower_limit_voronoi_ = config.room_area_factor_lower_limit_voronoi;
@@ -388,6 +390,7 @@ void RoomSegmentationServer::execute_segmentation_server(const ipa_building_msgs
 	ROS_INFO("map resolution is : %f", goal->map_resolution);
 	ROS_INFO("segmentation algorithm: %d", room_segmentation_algorithm_);
 
+	// if (goal->input_map)
 	//converting the map msg in cv format
 	cv_bridge::CvImagePtr cv_ptr_obj;
 	cv_ptr_obj = cv_bridge::toCvCopy(goal->input_map, sensor_msgs::image_encodings::MONO8);

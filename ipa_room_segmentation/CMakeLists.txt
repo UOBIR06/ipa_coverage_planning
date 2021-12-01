@@ -14,6 +14,8 @@ set(catkin_RUN_PACKAGES
 	roscpp
 	roslib
 	sensor_msgs
+	grid_map_ros
+	grid_map_msgs
 )
 
 set(catkin_BUILD_PACKAGES
@@ -127,7 +129,7 @@ target_link_libraries(room_segmentation_server
 ### client for testing purpose
 add_executable(room_segmentation_client ros/src/room_segmentation_client.cpp)
 target_link_libraries(room_segmentation_client
-	${catkin_LIBRARIES} 
+	${catkin_LIBRARIES}
 	${OpenCV_LIBRARIES})
 add_dependencies(room_segmentation_client
 	${catkin_EXPORTED_TARGETS}
