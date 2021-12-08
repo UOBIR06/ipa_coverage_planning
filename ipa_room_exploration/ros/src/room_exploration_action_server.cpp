@@ -593,7 +593,7 @@ void RoomExplorationServer::exploreRoom(const ipa_building_msgs::RoomExploration
 		std::vector<geometry_msgs::PoseStamped> exploration_path_pose_stamped(exploration_path.size());
 		std_msgs::Header header;
 		header.stamp = ros::Time::now();
-		header.frame_id = "/map";
+		header.frame_id = map_frame_;
 		for (size_t i=0; i<exploration_path.size(); ++i)
 		{
 			exploration_path_pose_stamped[i].header = header;
@@ -608,7 +608,7 @@ void RoomExplorationServer::exploreRoom(const ipa_building_msgs::RoomExploration
 		action_result.coverage_path_pose_stamped = exploration_path_pose_stamped;
 
 		nav_msgs::Path coverage_path;
-		coverage_path.header.frame_id = "map";
+		coverage_path.header.frame_id = map_frame_;
 		coverage_path.header.stamp = ros::Time::now();
 		coverage_path.poses = exploration_path_pose_stamped;
 		path_pub_.publish(coverage_path);
